@@ -23,7 +23,7 @@ int getDigit(int n, int ith_digit_from_rightmost)
     int digit = n / (int)(std::pow(10, ith_digit_from_rightmost - 1)) % 10;
     return digit;
 }
-void countSort(int a[], int n, int ith_digit_from_rightmost, int &compare)
+void countSort(int a[], int n, int ith_digit_from_rightmost, long long &compare)
 {
     // digits-frequency tracking
     int copy_a[n];
@@ -104,7 +104,7 @@ void radix_sort(int a[], int n)
     }
 }
 
-void radix_sort_compare(int a[], int n, int &compare)
+void radix_sort_compare(int a[], int n, long long &compare)
 {
     // get max
     compare = n;

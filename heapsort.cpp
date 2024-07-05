@@ -26,7 +26,7 @@ void heapify_sub_tree(int a[], int n, int i)
 }
 
 // overloaded heapify_sub_tree function to count comparisons
-void heapify_sub_tree(int a[], int n, int i, int &compare)
+void heapify_sub_tree(int a[], int n, int i, long long &compare)
 {
     // left and right child of node i
     int left = 2 * i + 1;
@@ -35,16 +35,13 @@ void heapify_sub_tree(int a[], int n, int i, int &compare)
     // finding index with largest value among the three
     int lowest = i;
 
-    compare++;
-    if (left < n && a[left] < a[lowest])
+    if (++compare && left < n && ++compare && a[left] < a[lowest])
         lowest = left;
-    compare++;
-    if (right < n && a[right] < a[lowest])
+    if (++compare && right < n && ++compare && a[right] < a[lowest])
         lowest = right;
 
     // if root is not largest, swap
-    compare++;
-    if (i != lowest)
+    if(++compare && i != lowest)
     {
         std::swap(a[i], a[lowest]);
 
@@ -76,11 +73,10 @@ void heap_sort(int a[], int n)
         a[i] = result[i];
 }
 
-void heap_sort_compare(int a[], int n, int &compare)
+void heap_sort_compare(int a[], int n, long long &compare)
 {
-    compare = 1;
     // heapify whole tree, from bottom to top
-    for (int i = n / 2 - 1; i >= 0; i--)
+    for (int i = n / 2 - 1; ++compare && i >= 0; i--)
     {
         compare++;
         heapify_sub_tree(a, n, i, compare);
@@ -88,10 +84,8 @@ void heap_sort_compare(int a[], int n, int &compare)
 
     // extract elements one by one
     int result[n];
-    compare++;
-    for (int i = 0; i < n; i++)
+    for (int i = 0; ++compare && i < n; i++)
     {
-        compare++;
         // get lowest value
         result[i] = a[0];
 
@@ -101,10 +95,6 @@ void heap_sort_compare(int a[], int n, int &compare)
     }
 
     // copy result back to original array
-    compare++;
-    for (int i = 0; i < n; i++)
-    {
-        compare++;
+    for (int i = 0; ++compare && i < n; i++)
         a[i] = result[i];
-    }
 }

@@ -53,7 +53,6 @@ void GenerateNearlySortedData(int a[], int n)
 		int r2 = rand()%n;
 		HoanVi(a[r1], a[r2]);
 	}
-	cout << "Done!\n";
 }
 
 void GenerateData(int a[], int n, int dataType)

@@ -5,7 +5,14 @@ unordered_map<string, sort_function_pointer> pure_func =
     {"flash-sort", flash_sort},
     {"bubble-sort", bubble_sort},
     {"quick-sort", quick_sort},
-    {"insertion-sort", insertion_sort}
+    {"insertion-sort", insertion_sort},
+    {"shell-sort", shell_sort},
+    {"radix-sort", radix_sort},
+    {"counting-sort", counting_sort},
+    {"heap-sort", heap_sort},
+    {"selection-sort", selection_sort},
+    {"merge-sort", merge_sort},
+    {"shaker-sort", shaker_sort}
 };
 
 unordered_map<string, comp_count_sort_function_pointer> comparison_count_func = 
@@ -13,15 +20,45 @@ unordered_map<string, comp_count_sort_function_pointer> comparison_count_func =
     {"flash-sort", flash_sort_compare},
     {"bubble-sort", bubble_sort_compare},
     {"quick-sort", quick_sort_compare},
-    {"insertion-sort", insertion_sort_compare}
+    {"insertion-sort", insertion_sort_compare},
+    {"shell-sort", shell_sort_compare},
+    {"radix-sort", radix_sort_compare},
+    {"counting-sort", counting_sort_compare},
+    {"heap-sort", heap_sort_compare},
+    {"selection-sort", selection_sort_compare},
+    {"merge-sort", merge_sort_compare},
+    {"shaker-sort", shaker_sort_compare}
+};
+
+unordered_map<string, string> order_name_from_flag = 
+{
+    {"-rand", "Randomized"},
+    {"-nsorted", "Nearly Sorted"},
+    {"-sorted", "Sorted"},
+    {"-rev", "Reversed"}
 };
 
 unordered_map<string, int> data_type = 
 {
-    {"-sorted", 0},
-    {"-nsorted", 1},
-    {"-rand", 2},
-    {"-rev", 3}
+    {"Randomized", 0},
+    {"Nearly Sorted", 1},
+    {"Sorted", 2},
+    {"Reversed", 3}
+};
+
+unordered_map<string, string> flag_to_name = 
+{
+    {"flash-sort", "Flash sort"},
+    {"bubble-sort", "Bubble sort"},
+    {"quick-sort", "Quick sort"},
+    {"insertion-sort", "Insertion sort"},
+    {"shell-sort", "Shell sort"},
+    {"radix-sort", "Radix sort"},
+    {"counting-sort", "Counting sort"},
+    {"heap-sort", "Heap sort"},
+    {"selection-sort", "Selection sort"},
+    {"merge-sort", "Merge sort"},
+    {"shaker-sort", "Shaker sort"}
 };
 
 void get_input_from_file(string input, int *&a, int &n)
@@ -34,7 +71,7 @@ void get_input_from_file(string input, int *&a, int &n)
     }
 
     fin >> n;
-    a = new int [n] {0};
+    a = new int [n];
     for(int i = 0; i < n; i++)
         fin >> a[i];
 
@@ -88,7 +125,7 @@ void command1(string algo_name, int n, int param_mask, string input_file) // one
 
     // Print info
     cout << "ALGORITHM MODE\n";
-    cout << "Algorithm: " << algo_name << '\n';
+    cout << "Algorithm: " << flag_to_name[algo_name] << '\n';
     cout << "Input file: " << input_file << '\n';
     cout << "Input size: " << n << '\n';
     cout << "------------------------\n";
@@ -122,7 +159,6 @@ void command2(string algo_name, int n, int param_mask, string input_order) // on
     chrono::time_point start = chrono::steady_clock::now();
     sort(b, n);
     chrono::time_point stop = chrono::steady_clock::now();
-
     chrono::milliseconds duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
 
     copy(a, a + n, b);
@@ -132,7 +168,7 @@ void command2(string algo_name, int n, int param_mask, string input_order) // on
 
     // Print info
     cout << "ALGORITHM MODE\n";
-    cout << "Algorithm: " << algo_name << '\n';
+    cout << "Algorithm: " << flag_to_name[algo_name] << '\n';
     cout << "Input size: " << n << '\n';
     cout << "Input order: " << input_order << '\n';
     cout << "------------------------\n";
@@ -182,7 +218,7 @@ void command3(string algo_name, int n, int param_mask) // one algo one array for
 
     // Print info
     cout << "ALGORITHM MODE\n";
-    cout << "Algorithm: " << algo_name << '\n';
+    cout << "Algorithm: " << flag_to_name[algo_name] << '\n';
     cout << "Input size: " << n << '\n';
 
     string input_order[4] = {"Randomized", "Nearly sorted", "Sorted", "Reversed"};
@@ -235,17 +271,17 @@ void command4(string algo_name1, string algo_name2, int n, int param_mask, strin
     copy(a, a + n, b);
     comp_count_sort1(b, n, num_compare1);
     copy(a, a + n, b);
-    comp_count_sort1(b, n, num_compare2);
+    comp_count_sort2(b, n, num_compare2);
 
     // Print info
     cout << "ALGORITHM MODE\n";
-    cout << "Algorithm: " << algo_name1 << " | " << algo_name2 << '\n';
+    cout << "Algorithm: " << flag_to_name[algo_name1] << " | " << flag_to_name[algo_name2] << '\n';
     cout << "Input file: " << input_file << '\n';
     cout << "Input size: " << n << '\n';
     cout << "------------------------\n";
     
     if(is_on(param_mask, 0)) // 0th bit is up -> shows runtime
-        cout << "Running time: " << duration1.count() << " milliseconds" << " | " << duration2.count() << "milliseconds\n";
+        cout << "Running time: " << duration1.count() << " milliseconds" << " | " << duration2.count() << " milliseconds\n";
     if(is_on(param_mask, 1)) // 1th bit is up -> shows number of comparison
         cout << "Comparisons: " << num_compare1 << " times" << " | " << num_compare2 << " times\n";
 
@@ -259,7 +295,7 @@ void command4(string algo_name1, string algo_name2, int n, int param_mask, strin
 
 void command5(string algo_name1, string algo_name2, int n, int param_mask, string input_order) // two algos one array generated
 {
-    cout << "Command2 activated!\n";
+    cout << "Command5 activated!\n";
     // Initiate array
     int *a = new int[n];
     int order = data_type[input_order];
@@ -288,19 +324,19 @@ void command5(string algo_name1, string algo_name2, int n, int param_mask, strin
     copy(a, a + n, b);
     comp_count_sort1(b, n, num_compare1);
     copy(a, a + n, b);
-    comp_count_sort1(b, n, num_compare2);
+    comp_count_sort2(b, n, num_compare2);
 
     // Print info
     cout << "ALGORITHM MODE\n";
-    cout << "Algorithm: " << algo_name1 << " | " << algo_name2 << '\n';
+    cout << "Algorithm: " << flag_to_name[algo_name1] << " | " << flag_to_name[algo_name2] << '\n';
     cout << "Input size: " << n << '\n';
     cout << "Input order: " << input_order << '\n';
     cout << "------------------------\n";
     
     if(is_on(param_mask, 0)) // 0th bit is up -> shows runtime
-        cout << "Running time: " << duration1.count() << " milliseconds" << " | " << duration2.count() << "milliseconds\n";
+        cout << "Running time: " << duration1.count() << " milliseconds" << " | " << duration2.count() << " milliseconds\n";
     if(is_on(param_mask, 1)) // 1th bit is up -> shows number of comparison
-        cout << "Comparisons: " << num_compare1 << " times" << " | " << num_compare2 << 'times\n';
+        cout << "Comparisons: " << num_compare1 << " times" << " | " << num_compare2 << " times\n";
 
     // Write data to file
     write_data_to_file("input.txt", a, n, false);
@@ -350,7 +386,7 @@ void algorithm_mode(const vector<string> &arglist)
                 param_mask = 3;
 
             n = stoi(arglist[1]);
-            input_order = arglist[2];
+            input_order = order_name_from_flag[arglist[2]];
             command2(algo, n, param_mask, input_order);
             break;
 
@@ -376,7 +412,7 @@ void comparison_mode(const vector<string> &arglist)
         
         case 4:
             n = stoi(arglist[2]);
-            input_order = arglist[3];
+            input_order = order_name_from_flag[arglist[3]];
             command5(algo1, algo2, n, 3, input_order);
             break;
 

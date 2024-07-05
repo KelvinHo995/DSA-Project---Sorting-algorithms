@@ -7,7 +7,7 @@ void insertion_sort(int a[], int l, int r)
         int temp = a[i];
 
         int j = i - 1;
-            while(j >= 0 and temp < a[j])
+            while(j >= l and temp < a[j])
             {
                 a[j + 1] = a[j];
                 j -= 1;
@@ -24,7 +24,7 @@ void insertion_sort(int a[], int l, int r, long long & cmp_count)
         int temp = a[i];
         
         int j = i - 1;
-            while(++cmp_count and j >= 0 and ++cmp_count and temp < a[j])
+            while(++cmp_count and j >= l and ++cmp_count and temp < a[j])
             {
                 a[j + 1] = a[j];
                 j -= 1;
@@ -57,7 +57,7 @@ void flash_sort(int a[], int n)
 
     auto get_bucket_id = [m, min_value, max_value](int value) -> int
     {
-        return m * (value - min_value) / (max_value - min_value + 1);
+        return 1ll * m * (value - min_value) / (max_value - min_value + 1);
     };
 
     // Step 3: Count elements in each bucket
@@ -104,7 +104,7 @@ void flash_sort(int a[], int n)
         int r = (bucket == m - 1 ? n : cnt[bucket + 1]);
         insertion_sort(a, l, r);
     }
-
+    
     delete [] cnt;
 }
 
@@ -131,7 +131,7 @@ void flash_sort_compare(int a[], int n, long long & cmp_count)
 
     auto get_bucket_id = [m, min_value, max_value](int value) -> int
     {
-        return m * (value - min_value) / (max_value - min_value + 1);
+        return 1ll * m * (value - min_value) / (max_value - min_value + 1);
     };
 
     // Step 3: Count elements in each bucket

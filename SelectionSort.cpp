@@ -1,4 +1,4 @@
-#include <SelectionSort.h>
+#include "SelectionSort.h"
 
 void selection_sort(int a[], int n) {
     for (int i = 0; i < n - 1; i++) {
@@ -12,7 +12,7 @@ void selection_sort(int a[], int n) {
     return;
 }
 
-void selection_sort_compare( int a[], int n, int& compare) {
+void selection_sort_compare( int a[], int n, long long & compare) {
     compare = 0;
     for (int i = 0; ++compare && i < n - 1; i++) {
         int min = i;

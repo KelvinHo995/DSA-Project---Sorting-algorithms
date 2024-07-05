@@ -1,4 +1,4 @@
-void shell_sort_compare(int array[], int n, int &compare)
+void shell_sort_compare(int array[], int n, long long &compare)
 {
     // Sort elements at n/2, n/4, n/8, ... intervals
     compare = 1;

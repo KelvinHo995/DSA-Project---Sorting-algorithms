@@ -16,6 +16,7 @@ using comp_count_sort_function_pointer = void (*)(int [], int, long long &);
 extern unordered_map<string, sort_function_pointer> pure_func;
 extern unordered_map<string, comp_count_sort_function_pointer> comparison_count_func;
 extern unordered_map<string, int> data_type;
+extern unordered_map<string, string> flag_to_name;
 
 void get_input_from_file(string input, int *&a, int &n);
 void write_data_to_file(string output, int *a, int n, bool append);

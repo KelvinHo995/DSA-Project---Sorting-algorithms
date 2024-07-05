@@ -1,11 +1,11 @@
-#include <CountingSort.h>
+#include "CountingSort.h"
 
 void counting_sort(int a[], int n) {
     int max = a[0], s[n];
     for (int i = 0; i < n; i++) 
         if (a[i] > max)
             max = a[i];
-    int c[max + 1];
+    int *c = new int [max + 1];
     for (int i = 0; i < max + 1; i++)
         c[i] = 0;
     for (int i = 0; i < n; i++)
@@ -18,16 +18,17 @@ void counting_sort(int a[], int n) {
     }
     for (int i = 0; i < n; i++)
         a[i] = s[i];
+    delete [] c;
     return;
 }
 
-void counting_sort_compare(int a[], int n, int& compare) {
+void counting_sort_compare(int a[], int n, long long & compare) {
     compare = 0;
     int max = a[0], s[n];
     for (int i = 0; ++compare && i < n; i++) 
         if (a[i] > max)
             max = a[i];
-    int c[max + 1];
+    int *c = new int [max + 1];
     for (int i = 0; ++compare && i < max + 1; i++)
         c[i] = 0;
     for (int i = 0; ++compare && i < n; i++)
@@ -40,5 +41,6 @@ void counting_sort_compare(int a[], int n, int& compare) {
     }
     for (int i = 0; ++compare && i < n; i++)
         a[i] = s[i];
+    delete [] c;
     return;
 }

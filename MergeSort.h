@@ -6,5 +6,5 @@ using namespace std;
 void merge_sort(int [], int);
 void merge(int [], int [], int[], int, int);
 
-void merge_sort_compare(int [], int, int&);
-void merge_compare(int [], int [], int[], int, int, int&);
+void merge_sort_compare(int [], int, long long &);
+void merge_compare(int [], int [], int[], int, int, long long &);
